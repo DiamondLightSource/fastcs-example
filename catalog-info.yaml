@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: fastcs-example
+  title: fastcs-example
+  description: An example simulation IOC for testing fastCS
+spec:
+  type: service
+  lifecycle: experimental
+  owner: group:default/beamline-controls
