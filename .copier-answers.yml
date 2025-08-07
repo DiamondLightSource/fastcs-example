@@ -1,0 +1,19 @@
+# Changes here will be overwritten by Copier
+_commit: 3.0.0-6-gd690d76
+_src_path: https://github.com/diamondlightsource/python-copier-template
+author_email: giles.knap@diamond.ac.uk
+author_name: Giles Knap
+component_lifecycle: experimental
+component_owner: group:default/beamline-controls
+component_type: service
+description: An example simulation IOC for testing fastCS
+distribution_name: fastcs-example
+docker: true
+docs_type: README
+git_platform: github.com
+github_org: DiamondLightSource
+package_name: fastcs_example
+pypi: true
+repo_name: fastcs-example
+strict_typing: true
+type_checker: pyright
