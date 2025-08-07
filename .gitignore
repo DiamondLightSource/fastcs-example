@@ -69,3 +69,4 @@ lockfiles/
 
 # ruff cache
 .ruff_cache/
+*code-workspace
