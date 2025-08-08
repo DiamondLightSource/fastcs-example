@@ -7,27 +7,23 @@
 
 An example simulation IOC for testing fastCS
 
-This is where you should write a short paragraph that describes what your module does,
-how it does it, and why people should use it.
 
 Source          | <https://github.com/DiamondLightSource/fastcs-example>
 :---:           | :---:
-PyPI            | `pip install fastcs-example`
+PyPI            | `pip install fastcs-example[demo]`
 Docker          | `docker run ghcr.io/diamondlightsource/fastcs-example:latest`
 Releases        | <https://github.com/DiamondLightSource/fastcs-example/releases>
 
-This is where you should put some images or code snippets that illustrate
-some relevant examples. If it is a library then you might put some
-introductory code here:
+# Usage
 
-```python
-from fastcs_example import __version__
+Start the simulation temperature controller by running the following command:
 
-print(f"Hello fastcs_example {__version__}")
+```bash
+tickit all src/fastcs_example/simulation/temp_controller.yaml
 ```
 
-Or if it is a commandline tool then you might put some example commands here:
+Start the fastCS IOC by running the following command:
 
-```
-python -m fastcs_example --version
+```bash
+fastcs-example run src/fastcs_example/controller.yaml
 ```

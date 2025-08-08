@@ -70,3 +70,6 @@ lockfiles/
 # ruff cache
 .ruff_cache/
 *code-workspace
+
+# auto-generated files
+opi/auto-generated/*.bob

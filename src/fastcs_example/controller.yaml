@@ -3,14 +3,13 @@ controller:
   ip_settings:
     ip: "localhost"
     port: 25565
-  num_ramp_controllers: 4
+  num_ramp_controllers: 1
 transport:
-  - gql:
-      host: localhost
-      port: 8083
-      log_level: info
+  - pva_ioc:
+      pv_prefix: DEMO
+    gui:
+      output_path: opi/auto-generated/pva_example.bob
   - ca_ioc:
       pv_prefix: DEMO
     gui:
-      title: Temperature Controller Demo
-      output_path: ./demo.bob
+      output_path: opi/auto-generated/ca_example.bob
