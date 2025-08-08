@@ -17,7 +17,7 @@ FROM developer AS build
 # Requires buildkit 0.17.0
 COPY --chmod=o+wrX . /workspaces/fastcs-example
 WORKDIR /workspaces/fastcs-example
-RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .
+RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .[demo]
 
 
 # The runtime stage copies the built venv into a slim runtime container
