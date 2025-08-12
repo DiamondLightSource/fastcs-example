@@ -6,8 +6,13 @@ FROM python:${PYTHON_VERSION} AS developer
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gdb \
+    busybox \
     graphviz \
     && rm -rf /var/lib/apt/lists/*
+
+# Use busybox to provide any missing commands
+# This is useful for commands like `telnet` that are not available in the base image
+RUN busybox --install -s
 
 # Set up a virtual environment and put it in PATH
 RUN python -m venv /venv

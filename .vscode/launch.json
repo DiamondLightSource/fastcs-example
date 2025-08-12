@@ -14,10 +14,11 @@
             },
             "pathMappings": [
                 {
-                    "localRoot": "${workspaceFolder}",
-                    "remoteRoot": "/venv/lib/python3.13/site-packages/stdio_socket"
+                    "localRoot": "${workspaceFolder}/src/fastcs_example",
+                    "remoteRoot": "/venv/lib/python3.11/site-packages/fastcs_example/"
                 }
-            ]
+            ],
+            "justMyCode": false
         },
         {
             "name": "Debug Unit Test",

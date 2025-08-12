@@ -62,3 +62,25 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Create tags for publishing debug image
+        id: meta-debug
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}-debug
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest
+      - name: Push cached debug image to container registry
+        if: inputs.publish && github.ref_type == 'tag'
+        uses: docker/build-push-action@v6
+        env:
+          DOCKER_BUILD_RECORD_UPLOAD: false
+        # This does not build the image again, it will find the image in the
+        # Docker cache and publish it
+        with:
+          context: .
+          push: true
+          target: developer
+          tags: ${{ steps.meta-debug.outputs.tags }}
+          labels: ${{ steps.meta-debug.outputs.labels }}
