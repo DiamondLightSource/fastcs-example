@@ -5,6 +5,7 @@ FROM python:${PYTHON_VERSION} AS developer
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    gdb \
     graphviz \
     && rm -rf /var/lib/apt/lists/*
 
@@ -22,7 +23,13 @@ RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .[demo]
 
 # The runtime stage copies the built venv into a slim runtime container
 FROM python:${PYTHON_VERSION}-slim AS runtime
-# Add apt-get system dependecies for runtime here if needed
+
+# Add apt-get system dependecies for runtime
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gdb \
+    && rm -rf /var/lib/apt/lists/*
+
+
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
 
