@@ -81,6 +81,6 @@ jobs:
         with:
           context: .
           push: true
-          target: developer
+          target: build
           tags: ${{ steps.meta-debug.outputs.tags }}
           labels: ${{ steps.meta-debug.outputs.labels }}

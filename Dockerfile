@@ -20,20 +20,22 @@ ENV PATH=/venv/bin:$PATH
 
 # The build stage installs the context into the venv
 FROM developer AS build
+
 # Requires buildkit 0.17.0
 COPY --chmod=o+wrX . /workspaces/fastcs-example
 WORKDIR /workspaces/fastcs-example
 RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .[demo]
 
-
 # The runtime stage copies the built venv into a slim runtime container
 FROM python:${PYTHON_VERSION}-slim AS runtime
 
-# Add apt-get system dependecies for runtime
+# Add apt-get system dependencies for runtime (enough to enable debugging)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gdb \
+    busybox \
     && rm -rf /var/lib/apt/lists/*
 
+RUN busybox --install -s
 
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
