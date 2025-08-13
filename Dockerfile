@@ -26,6 +26,32 @@ WORKDIR /workspaces/fastcs-example
 RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .[demo]
 
 
+FROM build AS debug
+
+
+# Set origin to use ssh
+RUN git remote set-url origin git@github.com:DiamondLightSource/fastcs-example.git
+
+
+# Make editable and debuggable
+RUN pip install debugpy
+RUN pip install -e '.[dev]'
+RUN chmod o+wrX /venv
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    busybox \
+    libnss-ldapd \
+    && rm -rf /var/lib/apt/lists/* \
+    && busybox --install -s
+# For this pod to understand finding user information from LDAP
+RUN sed -i 's/files/ldap files/g' /etc/nsswitch.conf
+
+# Alternate entrypoint to allow devcontainer to attach
+ENTRYPOINT [ "/bin/bash", "-c", "--" ]
+CMD [ "while true; do sleep 30; done;" ]
+
+
 # The runtime stage copies the built venv into a slim runtime container
 FROM python:${PYTHON_VERSION}-slim AS runtime
 

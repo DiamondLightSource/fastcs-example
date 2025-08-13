@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier
-_commit: 4.1.0
+_commit: 4.2.0-1-g1797f00
 _src_path: https://github.com/diamondlightsource/python-copier-template
 author_email: giles.knap@diamond.ac.uk
 author_name: Giles Knap
@@ -9,7 +9,7 @@ component_type: service
 description: An example simulation IOC for testing fastCS
 distribution_name: fastcs-example
 docker: true
-docker_debug: false
+docker_debug: true
 docs_type: README
 git_platform: github.com
 github_org: DiamondLightSource
