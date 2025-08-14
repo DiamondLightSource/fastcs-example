@@ -1,6 +1,8 @@
 # The devcontainer should use the developer target and run as root with podman
 # or docker with user namespaces.
 ARG PYTHON_VERSION=3.11
+
+# The developer is used by devcontainers ###############################################
 FROM python:${PYTHON_VERSION} AS developer
 
 # Add any system dependencies for the developer/build environment here
@@ -15,13 +17,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN python -m venv /venv
 ENV PATH=/venv/bin:$PATH
 
-# The build stage installs the context into the venv
+# The build stage installs the context into the venv ###################################
 FROM developer AS build
+
 # Requires buildkit 0.17.0
 COPY --chmod=o+wrX . /workspaces/fastcs-example
 WORKDIR /workspaces/fastcs-example
 RUN touch dev-requirements.txt && pip install debugpy -c dev-requirements.txt .[demo]
 
+# The debug stage allows for debugging and development #################################
 FROM build AS debug
 
 # Set origin to use ssh
@@ -45,14 +49,13 @@ RUN sed -i 's/files/ldap files/g' /etc/nsswitch.conf
 # Alternate entrypoint to allow restarting the IOC
 ENTRYPOINT [ "/bin/bash", "-c", "sleep infinity" ]
 
-# The runtime stage copies the built venv into a slim runtime container
+# The runtime stage has built venv only ################################################
 FROM python:${PYTHON_VERSION}-slim AS runtime
 
 # Add apt-get system dependecies for runtime
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gdb \
     && rm -rf /var/lib/apt/lists/*
-
 
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
