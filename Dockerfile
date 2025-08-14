@@ -5,8 +5,11 @@ FROM python:${PYTHON_VERSION} AS developer
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    gdb \
+    busybox \
     graphviz \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && busybox --install -s
 
 # Set up a virtual environment and put it in PATH
 RUN python -m venv /venv
@@ -17,33 +20,40 @@ FROM developer AS build
 # Requires buildkit 0.17.0
 COPY --chmod=o+wrX . /workspaces/fastcs-example
 WORKDIR /workspaces/fastcs-example
-RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .[demo]
-
+RUN touch dev-requirements.txt && pip install debugpy -c dev-requirements.txt .[demo]
 
 FROM build AS debug
-
 
 # Set origin to use ssh
 RUN git remote set-url origin git@github.com:DiamondLightSource/fastcs-example.git
 
+# Make editable and debuggable
+RUN pip install debugpy -e '.[dev]'
+RUN chmod o+wrX /venv /workspaces
+
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+    busybox \
+    gdb \
+    libnss-ldapd \
+    && rm -rf /var/lib/apt/lists/* \
+    && busybox --install -s
 
 # For this pod to understand finding user information from LDAP
-RUN apt update
-RUN DEBIAN_FRONTEND=noninteractive apt install libnss-ldapd -y
 RUN sed -i 's/files/ldap files/g' /etc/nsswitch.conf
 
-# Make editable and debuggable
-RUN pip install debugpy
-RUN pip install -e .
-
-# Alternate entrypoint to allow devcontainer to attach
-ENTRYPOINT [ "/bin/bash", "-c", "--" ]
-CMD [ "while true; do sleep 30; done;" ]
-
+# Alternate entrypoint to allow restarting the IOC
+ENTRYPOINT [ "/bin/bash", "-c", "sleep infinity" ]
 
 # The runtime stage copies the built venv into a slim runtime container
 FROM python:${PYTHON_VERSION}-slim AS runtime
-# Add apt-get system dependecies for runtime here if needed
+
+# Add apt-get system dependecies for runtime
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gdb \
+    && rm -rf /var/lib/apt/lists/*
+
+
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
 
