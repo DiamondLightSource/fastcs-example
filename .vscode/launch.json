@@ -14,8 +14,8 @@
             },
             "pathMappings": [
                 {
-                    "localRoot": "${workspaceFolder}/src/fastcs_example",
-                    "remoteRoot": "/venv/lib/python3.11/site-packages/fastcs_example/"
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "."
                 }
             ],
             "justMyCode": false
