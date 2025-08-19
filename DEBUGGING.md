@@ -21,10 +21,8 @@ This will deploy the container running sleep and with a new PVC called bl47p-ea-
 Exec this in the container
 
 ```bash
-python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678 --configure-subProcess true -m fastcs_example run /epics/ioc/config/controller.yaml
+python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678 --wait-for-client --configure-subProcess true -m fastcs_example run /epics/ioc/config/controller.yaml
 ```
-
-add `--wait-for-client` to debugpy to try debugging startup.
 
 Port forward the debug port on your workstation
 

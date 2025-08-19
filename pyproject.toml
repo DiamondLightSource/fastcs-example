@@ -13,7 +13,7 @@ classifiers = [
 ]
 description = "An example simulation IOC for testing fastCS"
 dependencies = [
-    "fastcs",
+    "fastcs>=0.9.2-beta.1",
 ] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
 license.file = "LICENSE"
