@@ -32,10 +32,10 @@ jobs:
         id: debug-meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/${{ github.repository }}-debug
           tags: |
-            type=ref,event=tag,suffix=-debug
-            type=raw,value=latest-debug
+            type=ref,event=tag
+            type=raw,value=latest
 
       - name: Build and publish debug image to container registry
         if: github.ref_type == 'tag'
