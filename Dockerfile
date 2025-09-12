@@ -23,7 +23,7 @@ FROM developer AS build
 # Requires buildkit 0.17.0
 COPY --chmod=o+wrX . /workspaces/fastcs-example
 WORKDIR /workspaces/fastcs-example
-RUN touch dev-requirements.txt && pip install stdio-socket debugpy \
+RUN touch dev-requirements.txt && pip install stdio-socket>=1.3.1 debugpy \
     -c dev-requirements.txt .[demo]
 
 # The debug stage allows for debugging and development #################################
