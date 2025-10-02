@@ -15,6 +15,7 @@ FROM developer AS build
 WORKDIR /app
 COPY . /app
 RUN chmod o+wrX .
+ENV PATH=/app/.venv/bin:$PATH
 
 # Tell uv sync to install python in a known location so we can copy it out later
 ENV UV_PYTHON_INSTALL_DIR=/python
@@ -56,7 +57,6 @@ COPY --from=build /python /python
 
 # Copy the environment, but not the source code
 COPY --from=build /app/.venv /app/.venv
-ENV PATH=/app/.venv/bin:$PATH
 
 # change this entrypoint if it is not the same as the repo
 ENTRYPOINT ["fastcs-example"]
