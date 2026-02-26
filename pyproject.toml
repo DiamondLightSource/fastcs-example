@@ -17,6 +17,7 @@ description = "An example simulation IOC for testing fastCS"
 dependencies = [
     "fastcs",
     "stdio-socket",
+    "tickit",
 ] # Add project dependencies here, e.g. ["click", "numpy"]
 dynamic = ["version"]
 license.file = "LICENSE"
